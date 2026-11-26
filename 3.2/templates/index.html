@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Message relay</title>
+    <style>
+      body { font-family: system-ui, sans-serif; margin: 3rem auto; max-width: 40rem; padding: 0 1rem; }
+      label, input, button { display: block; }
+      input { box-sizing: border-box; margin: .5rem 0 1rem; padding: .6rem; width: 100%; }
+      button { cursor: pointer; padding: .6rem 1rem; }
+      .result, .error { margin-top: 1.5rem; padding: 1rem; overflow-wrap: anywhere; }
+      .result { background: #eef7ee; }
+      .error { background: #fff0f0; color: #8b0000; }
+    </style>
+  </head>
+  <body>
+    <h1>Message relay</h1>
+    <form method="post">
+      <label for="message">Message</label>
+      <input id="message" name="message" type="text" maxlength="4096"
+             value="{{ message }}" required>
+      <button type="submit">Send message</button>
+    </form>
+
+    {% if result is not none %}
+      <section class="result" aria-live="polite">
+        <strong>Response</strong>
+        <p>{{ result }}</p>
+      </section>
+    {% endif %}
+    {% if error %}
+      <p class="error" role="alert">{{ error }}</p>
+    {% endif %}
+  </body>
+</html>

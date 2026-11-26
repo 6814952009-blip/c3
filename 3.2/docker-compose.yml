@@ -1,0 +1,27 @@
+services:
+  socket-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.socket
+    environment:
+      SOCKET_HOST: 0.0.0.0
+      SOCKET_PORT: 9000
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; s=socket.create_connection(('127.0.0.1', 9000), timeout=2); s.close()"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    environment:
+      SOCKET_HOST: socket-server
+      SOCKET_PORT: 9000
+      SOCKET_TIMEOUT: 5
+    ports:
+      - "5000:5000"
+    depends_on:
+      socket-server:
+        condition: service_healthy

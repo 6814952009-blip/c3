@@ -1,0 +1,36 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: dockerfile.server
+    container_name: chat_server
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  client1:
+    profiles:
+      - interactive
+    build:
+      context: .
+      dockerfile: dockerfile.client
+    container_name: chat_client1
+    stdin_open: true
+    tty: true
+    environment:
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - server
+
+  client2:
+    profiles:
+      - interactive
+    build:
+      context: .
+      dockerfile: dockerfile.client
+    container_name: chat_client2
+    stdin_open: true
+    tty: true
+    environment:
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - server
